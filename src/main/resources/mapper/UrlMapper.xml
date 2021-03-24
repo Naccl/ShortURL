@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.naccl.dwz.mapper.UrlMapper">
+    <select id="getLongUrlByShortUrl" resultType="java.lang.String">
+        select lurl from url_map where surl=#{surl}
+    </select>
+
+    <insert id="saveUrlMap" parameterType="top.naccl.dwz.entity.UrlMap" useGeneratedKeys="true" keyProperty="id">
+        insert into url_map (surl, lurl, create_time) values (#{surl}, #{lurl}, #{createTime})
+    </insert>
+</mapper>
