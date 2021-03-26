@@ -7,11 +7,23 @@
 </head>
 <body>
 	<div class="box">
-		<input type="text" id="long">
-		<button type="button" id="generate">生成</button>
-		<input type="text" id="short">
+		<label for="long" class="inp">
+			<input type="text" id="long" placeholder="&nbsp;">
+			<span class="label">长链接</span>
+			<span class="focus-bg"></span>
+		</label>
+		<button type="button" id="generate">生成短链接</button>
+		<div style="text-align: center;">
+			<label for="short" class="inp short">
+				<input type="text" id="short" placeholder="&nbsp;">
+				<span class="label">短链接</span>
+				<span class="focus-bg"></span>
+			</label>
+			<button type="button" id="copy" style="width:100px;" data-clipboard-action="copy" data-clipboard-target="#short">Copy</button>
+		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
 	<script>
 		$('#generate').click(() => {
 			let longURL = $('#long').val();
@@ -31,6 +43,14 @@
 				alert('请输入原始链接');
 			}
 		})
+		let clipboard = new ClipboardJS('#copy');
+		clipboard.on('success', function (e) {
+			e.clearSelection();
+			$('#copy').text('Copied!');
+			setTimeout(() => {
+				$('#copy').text('Copy');
+			}, 2000)
+		});
 	</script>
 </body>
 </html>
