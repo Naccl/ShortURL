@@ -26,7 +26,7 @@ public class UrlServiceImpl implements UrlService {
 	StringRedisTemplate redisTemplate;
 	//自定义长链接防重复字符串
 	private static final String DUPLICATE = "*";
-	//最近使用的短链接过期时间(分钟)
+	//最近使用的短链接缓存过期时间(分钟)
 	private static final long TIMEOUT = 10;
 	//创建布隆过滤器
 	private static final BitMapBloomFilter FILTER = BloomFilterUtil.createBitMap(10);
@@ -36,11 +36,17 @@ public class UrlServiceImpl implements UrlService {
 		//查找Redis中是否有缓存
 		String longURL = redisTemplate.opsForValue().get(shortURL);
 		if (longURL != null) {
-			//有缓存
+			//有缓存，延迟缓存时间
+			redisTemplate.expire(shortURL, TIMEOUT, TimeUnit.MINUTES);
 			return longURL;
 		}
 		//Redis没有缓存，从数据库查找
-		return urlMapper.getLongUrlByShortUrl(shortURL);
+		longURL = urlMapper.getLongUrlByShortUrl(shortURL);
+		if (longURL != null) {
+			//数据库有此短链接，添加缓存
+			redisTemplate.opsForValue().set(shortURL, longURL, TIMEOUT, TimeUnit.MINUTES);
+		}
+		return longURL;
 	}
 
 	@Override
