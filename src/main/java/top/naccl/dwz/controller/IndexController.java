@@ -48,6 +48,7 @@ public class IndexController {
 	public String redirect(@PathVariable String shortURL) {
 		String longURL = urlService.getLongUrlByShortUrl(shortURL);
 		if (longURL != null) {
+			urlService.updateUrlViews(shortURL);
 			//查询到对应的原始链接，302重定向
 			return "redirect:" + longURL;
 		}

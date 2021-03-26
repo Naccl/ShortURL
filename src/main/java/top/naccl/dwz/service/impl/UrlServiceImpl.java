@@ -81,4 +81,9 @@ public class UrlServiceImpl implements UrlService {
 		}
 		return shortURL;
 	}
+
+	@Override
+	public void updateUrlViews(String shortURL) {
+		urlMapper.updateUrlViews(shortURL);
+	}
 }

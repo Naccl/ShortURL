@@ -15,4 +15,6 @@ public interface UrlMapper {
 	String getLongUrlByShortUrl(String surl);
 
 	int saveUrlMap(UrlMap urlMap);
+
+	int updateUrlViews(String surl);
 }
