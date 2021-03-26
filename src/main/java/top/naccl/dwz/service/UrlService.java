@@ -3,5 +3,5 @@ package top.naccl.dwz.service;
 public interface UrlService {
 	String getLongUrlByShortUrl(String shortURL);
 
-	String saveUrlMap(String shortURL, String longURL);
+	String saveUrlMap(String shortURL, String longURL, String originalURL);
 }

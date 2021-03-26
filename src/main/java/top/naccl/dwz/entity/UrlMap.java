@@ -22,9 +22,9 @@ public class UrlMap {
 	private String lurl;//长链接
 	private Date createTime;//创建时间
 
-	public UrlMap(String surl, String lurl, Date createTime) {
+	public UrlMap(String surl, String lurl) {
 		this.surl = surl;
 		this.lurl = lurl;
-		this.createTime = createTime;
+		this.createTime = new Date();
 	}
 }

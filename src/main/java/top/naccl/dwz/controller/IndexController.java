@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,11 +38,20 @@ public class IndexController {
 	@ResponseBody
 	public R generateShortURL(@RequestParam String longURL) {
 		if (UrlUtils.checkURL(longURL)) {
-			String shortURL = urlService.saveUrlMap(HashUtils.hashToBase62(longURL), longURL);
+			String shortURL = urlService.saveUrlMap(HashUtils.hashToBase62(longURL), longURL, longURL);
 			return R.ok("请求成功", host + shortURL);
-		} else {
-			return R.create(400, "URL有误");
 		}
+		return R.create(400, "URL有误");
+	}
 
+	@GetMapping("/{shortURL}")
+	public String redirect(@PathVariable String shortURL) {
+		String longURL = urlService.getLongUrlByShortUrl(shortURL);
+		if (longURL != null) {
+			//查询到对应的原始链接，302重定向
+			return "redirect:" + longURL;
+		}
+		//没有对应的原始链接，直接返回首页
+		return "redirect:/";
 	}
 }
