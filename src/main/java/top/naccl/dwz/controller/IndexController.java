@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.naccl.dwz.annotation.AccessLimit;
 import top.naccl.dwz.entity.R;
 import top.naccl.dwz.service.UrlService;
 import top.naccl.dwz.util.HashUtils;
@@ -34,6 +35,7 @@ public class IndexController {
 		return "index";
 	}
 
+	@AccessLimit(seconds = 10, maxCount = 1, msg = "10秒内只能生成一次短链接")
 	@PostMapping("/generate")
 	@ResponseBody
 	public R generateShortURL(@RequestParam String longURL) {
