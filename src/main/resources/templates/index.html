@@ -29,17 +29,25 @@
 		$('#generate').click(() => {
 			let longURL = $('#long').val();
 			if (longURL) {
-				$.post("/generate", {
-					longURL
-				}, function (res) {
-					if (res.code === 200) {
-						$('#short').val(res.data);
-					} else {
-						alert(res.msg);
-					}
-				}, "json").fail(() => {
-					alert('异常错误');
-				});
+              $.ajax({
+                url: "/generate",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                  longURL: longURL
+                }),
+                dataType: "json",
+                success: function (res) {
+                  if (res.code === 200) {
+                    $('#short').val(res.data);
+                  } else {
+                    alert(res.msg);
+                  }
+                },
+                error: function () {
+                  alert('异常错误');
+                }
+              });
 			} else {
 				alert('请输入原始链接');
 			}
